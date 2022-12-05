@@ -13,10 +13,14 @@ const scores = { L: 0, D: 3, W: 6 }
 
 const read = input => readFileSync(input, { encoding: 'ascii' })
 
-const parse = (row) => {
+const parse = row => {
   const t = {
-    'A': 0, 'B': 1, 'C': 2,
-    'X': 0, 'Y': 1, 'Z': 2
+    A: 0,
+    B: 1,
+    C: 2,
+    X: 0,
+    Y: 1,
+    Z: 2
   }
 
   return row.split(' ').map(i => t[i])
@@ -29,6 +33,7 @@ const play = ([a, b]) => {
 
 const sum = (sum, item) => sum + item
 
+// prettier-ignore
 const result = read(input)
   .split('\n')
   .map(parse)

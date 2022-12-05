@@ -13,10 +13,14 @@ const scores = { L: 0, D: 3, W: 6 }
 
 const read = input => readFileSync(input, { encoding: 'ascii' })
 
-const parse = (row) => {
+const parse = row => {
   const t = {
-    'A': 0, 'B': 1, 'C': 2,
-    'X': 'L', 'Y': 'D', 'Z': 'W'
+    A: 0,
+    B: 1,
+    C: 2,
+    X: 'L',
+    Y: 'D',
+    Z: 'W'
   }
 
   return row.split(' ').map(i => t[i])
