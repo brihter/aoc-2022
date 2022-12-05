@@ -7,34 +7,22 @@ const read = input => {
   return readFileSync(input, { encoding: 'ascii' })
 }
 
-const parse = i => {
-  return i.length > 0 ? parseInt(i) : i
+const parse = chunk => {
+  return chunk
+    .split('\n')
+    .filter(i => i.length > 0)
+    .map(i => parseInt(i))
 }
 
-const aggregate = (acc, curr) => {
-  if (curr === '') {
-    acc.max.push(acc.sum)
-    acc.sum = 0
-    return acc
-  }
-
-  acc.sum += curr
-  return acc
+const sum = (items) => {
+  return items.reduce((sum, item) => sum + item, 0)
 }
 
-// prettier-ignore
-const sums = read(input)
-  .split('\n')
+const result = read(input)
+  .split('\n\n')
   .map(parse)
-  .reduce(aggregate, { max: [], sum: 0 })
-
-// prettier-ignore
-const result = sums.max
+  .map(sum)
   .sort((a, b) => (a > b ? -1 : 1))
   .slice(0, 3)
-  .reduce((acc, curr) => {
-    acc += curr
-    return acc
-  }, 0)
 
-console.log(result)
+console.log(sum(result))
