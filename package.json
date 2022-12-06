@@ -26,5 +26,8 @@
     "semi": false,
     "singleQuote": true,
     "arrowParens": "avoid"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

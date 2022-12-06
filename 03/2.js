@@ -1,29 +1,40 @@
 import { argv } from 'node:process'
 import { readFileSync } from 'node:fs'
+import _ from 'lodash'
 
-const [_, __, input] = argv
+const [, , input] = argv
 
 const read = input => readFileSync(input, { encoding: 'ascii' })
 
-const group = (line) => {
-  const m = line.length/2
-  const s1 = new Set(line.substr(0, m))
-  const s2 = new Set(line.substr(m))
-  return [...s1].filter(x => s2.has(x)).pop()
+const group = (items) => {
+  const intersect = (a, b) => new Set([...a].filter(x => b.has(x)))
+
+  const sets = items.reduce((acc, line) => {
+    acc.push(new Set(line))
+    return acc
+  }, [])
+
+  const intersection = sets.reduce((acc, set) => intersect(acc, set), sets[0])
+
+  return [...intersection].pop()
 }
 
 const score = (item) => {
   const isLowercase = (item) => item.match(/[a-z]/) !== null
-
   const code = item.charCodeAt(0)
   return isLowercase(item) ? code - 96 : code - 38
 }
 
 const sum = (sum, value) => sum + value
 
+let result
+
 // prettier-ignore
-const result = read(input)
+result = read(input)
   .split('\n')
+
+// prettier-ignore
+result = _.chunk(result, 3)
   .map(group)
   .map(score)
   .reduce(sum, 0)
