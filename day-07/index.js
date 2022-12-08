@@ -69,14 +69,20 @@ const { graph } = read(input)
   .reduce(build, { graph: Graph(), path: [] })
 
 const part1 = () => {
-  let sum = 0
-  graph.traverseDown('/', (key, attr) => {
-    if (attr.size <= 100000 && attr.type === 'dir') {
-      sum += attr.size
-    }
-  })
-  console.log(sum)
+  const getSize = (key, attr) => {
+    if (attr.size <= 100000 && attr.type === 'dir') return attr.size
+    return 0
+  }
+
+  const sum = (acc, value) => acc + value
+
+  return graph
+    .traverse('/', getSize)
+    .reduce(sum, 0)
 }
+
+const r1 = part1()
+console.log(r1)
 
 const part2 = () => {
   const root = graph.get('/')
@@ -99,8 +105,8 @@ const part2 = () => {
   })
 
   const path = graph.get(smallestPtr)
-  console.log(path.attributes.size)
+  return path.attributes.size
 }
 
-part1()
-part2()
+const r2 = part2()
+console.log(r2)

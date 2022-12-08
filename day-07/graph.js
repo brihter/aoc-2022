@@ -8,6 +8,14 @@ const Graph = () => {
 
   const traverseDown = (key, fn) => bfsFromNode(g, key, fn, { mode: 'outbound' })
   
+  const traverse = (key, fn) => {
+    const results = []
+    bfsFromNode(g, key, (key, attr) => {
+      results.push(fn(key, attr))
+    }, { mode: 'outbound' })
+    return results
+  }
+
   const update = (node) => {
     g.updateNode(node.key, attr => ({
       ...attr,
@@ -37,6 +45,7 @@ const Graph = () => {
     add,
     update,
     get,
+    traverse,
     traverseUp,
     traverseDown
   }
