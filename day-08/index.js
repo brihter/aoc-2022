@@ -7,20 +7,23 @@ const [, , input] = argv
 const read = input => readFileSync(input, { encoding: 'ascii' })
 
 const scanRow = (row) => {
-  const { items } = row.reduce((acc, value, i) => {
-    if (value > acc.max) {
-      acc.max = value
-      acc.items[i] = 1
+  let last = -1
+
+  const max = (acc, value, i) => {
+    if (value > last) {
+      acc[i] = 1
+      last = value
     }
     return acc
-  }, { max: -1, items: new Array(row.length).fill(0) })
-  return items
+  }
+
+  return row.reduce(max, fill(0, row.length))
 }
 
 const scan = (matrix) => {
-  let result = fill(matrix.length, matrix.length, 0)
+  let result = fill(0, matrix.length, matrix.length)
 
-  new Array(4).fill(0).forEach(() => {
+  fill(0, 4).forEach(() => {
     matrix = rotate(matrix)
     result = rotate(result)
     result = union(result, matrix.map(scanRow))
