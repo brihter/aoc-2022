@@ -18,4 +18,6 @@ node day-05/2.js day-05/input.txt
 node day-06/index.js day-06/input.txt 4
 node day-06/index.js day-06/input.txt 14
 node day-07/index.js day-07/input.txt
+node day-08/index.js day-08/input.txt
+node day-09/index.js day-09/input.txt
 ```
