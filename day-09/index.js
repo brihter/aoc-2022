@@ -1,28 +1,28 @@
 import { argv } from 'node:process'
 import { readFileSync } from 'node:fs'
 
-import { V, add, unit, distance, serialize, subtract } from './vector.js'
+import { V, add, distance, serialize, subtract } from './vector.js'
 
 const [, , input] = argv
 const read = input => readFileSync(input, { encoding: 'ascii' })
 
 const vectors = {
-  U: (d) => V(0, d),
-  D: (d) => V(0, -d),
-  L: (d) => V(-d, 0),
-  R: (d) => V(d, 0)
+  U: V(0, 1),
+  D: V(0, -1),
+  L: V(-1, 0),
+  R: V(1, 0)
 }
 
 const parse = (row) => {
-  const [direction, distance] = row.split(' ')
-  return vectors[direction](Number(distance))
+  let [direction, distance] = row.split(' ')
+  distance = Number(distance)
+  return Array(distance).fill(vectors[direction])
 }
 
 const move = (state, v1) => {
   const head = (v1) => add(state.head, v1)
   const tail = (v1) => {
     const d = distance(state.head, state.tail)
-    if (d === 2) state.tail = add(state.tail, v1)
     if (d >= 2) {
       let diff = state.head
       diff = subtract(diff, state.tail)
@@ -48,8 +48,7 @@ let state = {
 
 state = read(input)
   .split('\n')
-  .map(parse)
-  .flatMap(unit)
+  .flatMap(parse)
   .reduce(move, state)
 
 const result = state.trace
